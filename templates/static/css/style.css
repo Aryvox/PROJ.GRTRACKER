@@ -1,0 +1,93 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url(/static/font/Montserrat.ttf);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Montserrat';
+    font-weight: bold;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(to right, #2a1212, #1d1738);
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 13vh; /* Responsive hauteur pour la barre de navigation */
+    padding: 1rem;
+    z-index: 99;
+    position: relative;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2vw; /* Espace entre les éléments proportionnel à la largeur de l'écran */
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 1.2vw; /* Taille de texte proportionnelle */
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .nav-links li a:hover {
+    color: #E60F0F;
+  }
+
+  .logo-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-nav img {
+    height: 7vh; /* Taille proportionnelle à la hauteur de l'écran */
+    margin: 2vh; /* Marge proportionnelle */
+  }
+
+  .cont-img {
+    transition: transform 0.1s ease-out;
+  z-index: 1;
+  position: relative;
+  width: 100vw;
+  height: 90vh;
+  margin: auto;
+  }
+
+  .cont-img .spiderman {
+    height: 100%; /* L'image remplit la hauteur du conteneur */
+    width: auto; /* Largeur ajustée pour conserver les proportions */
+  }
+
+  /* Ajustement des bulles avec des unités relatives */
+  .cont-img .bulle1 {
+    position: absolute;
+  bottom: 68vh;
+  left: 57vh;
+  transform: translate(-50%, -50%);
+  width: 32vw;
+  }
+
+  .cont-img .bulle2 {
+    position: absolute;
+    bottom: 33vw;
+    left: 173vh;
+    width: 33vw;
+  }
+
+  .cont-img .bulle3 {
+    position: absolute;
+  top: 28vh;
+  left: 120vh;
+  width: 54vw;
+  }
