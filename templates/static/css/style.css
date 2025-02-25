@@ -12,7 +12,8 @@
   body {
     font-family: 'Montserrat';
     font-weight: bold;
-    overflow: hidden;
+    overflow: scroll;
+    overflow-x: hidden;
     height: 100vh;
     background: linear-gradient(to right, #2a1212, #1d1738);
   }
@@ -90,4 +91,9 @@
   top: 28vh;
   left: 120vh;
   width: 54vw;
+  }
+
+  /* Ajouter cette classe */
+  .no-scroll {
+    overflow: hidden !important;
   }

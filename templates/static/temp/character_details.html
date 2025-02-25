@@ -1,0 +1,85 @@
+{{define "character_details"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/collection.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>{{.character.name}} - Détails</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-nav">
+            <a href="/mainMenu"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/mainMenu">Accueil</a></li>
+            <li><a href="/collection">Collection</a></li>
+            <li><a href="/ressource">Ressource</a></li>
+            <li><a href="/categorie">Categorie</a></li>
+            <li><a href="/favoris">Favoris</a></li>
+            <li><a href="/recherche">Recherche</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="page-container">
+        <div class="character-details">
+            <h1 class="page-title">{{.character.name}}</h1>
+            <img src="{{.character.thumbnail.path}}.{{.character.thumbnail.extension}}" alt="{{.character.name}}">
+            <p class="description">{{if .character.description}}{{.character.description}}{{else}}Aucune description disponible.{{end}}</p>
+            
+            <div class="character-stats">
+                <p>Comics: {{.character.comics.available}}</p>
+                <p>Series: {{.character.series.available}}</p>
+                <p>Stories: {{.character.stories.available}}</p>
+            </div>
+
+            {{if .comics}}
+            <div class="character-comics">
+                <h2>Comics</h2>
+                <div class="comics-grid">
+                    {{range .comics}}
+                    <div class="comic-card">
+                        <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.title}}">
+                        <h3>{{.title}}</h3>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+
+            {{if .series}}
+            <div class="character-series">
+                <h2>Séries</h2>
+                <div class="series-grid">
+                    {{range .series}}
+                    <div class="series-card">
+                        <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.title}}">
+                        <h3>{{.title}}</h3>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+
+            <div class="character-links">
+                <h3>Liens</h3>
+                {{range .character.urls}}
+                    <a href="{{.url}}" target="_blank" class="marvel-link">{{.type}}</a>
+                {{end}}
+            </div>
+
+            <div class="back-navigation">
+                <a href="/collection" class="back-btn">← Retour à la collection</a>
+                <a href="/ressource" class="back-btn">← Retour aux ressources</a>
+                <a href="/categorie" class="back-btn">← Retour aux catégories</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}} 

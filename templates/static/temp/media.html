@@ -1,0 +1,53 @@
+{{define "media"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/collection.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>Films & Séries - Marvel</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-nav">
+            <a href="#"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/mainMenu">Accueil</a></li>
+            <li><a href="/collection">Collection</a></li>
+            <li><a href="/ressource">Ressource</a></li>
+            <li><a href="/categorie">Categorie</a></li>
+            <li><a href="/favoris">Favoris</a></li>
+            <li><a href="/recherche">Recherche</a></li>
+            <li><a href="/media">Films & Séries</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="page-container">
+        <h1 class="page-title">Films & Séries Marvel</h1>
+        
+        <div class="media-tabs">
+            <a href="/media?type=movies" class="tab-button {{if eq .mediaType "movies"}}active{{end}}">Films</a>
+            <a href="/media?type=shows" class="tab-button {{if eq .mediaType "shows"}}active{{end}}">Séries TV</a>
+        </div>
+
+        <div class="page-content">
+            <div class="media-grid">
+                {{range .data}}
+                <div class="media-card">
+                    <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.title}}">
+                    <h2>{{.title}}</h2>
+                    <p>{{if .description}}{{.description}}{{else}}Aucune description disponible.{{end}}</p>
+                    <a href="/media/details/{{.id}}" class="details-btn">📖 Détails</a>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}} 

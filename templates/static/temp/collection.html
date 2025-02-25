@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/collection.css">
-    <title>Page de TEST</title>
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>Collection - Marvel</title>
 </head>
 <body>
     <nav>
         <div class="logo-nav">
-            <a href="#"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+            <a href="/mainMenu"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
         </div>
         <ul class="nav-links">
             <li><a href="/mainMenu">Accueil</a></li>
@@ -22,22 +25,40 @@
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
-    <h1>Liste des personnages Marvel</h1>
-    <ul>
-        {{range .data.results}}
-        <li>
-            <h2>{{.name}}</h2>
-            <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.name}}" width="100">
-            <p>{{.description}}</p>
-        </li>
-        {{end}}
-    </ul>
-    <div class="cont-img">
-        <img class="bulle1" id="BulleB1" src="static/img/TopM.svg">
-        <img class="bulle2" id="BulleB2" src="static/img/Right.svg">
-        <img class="bulle3" id="BulleB3" src="static/img/Bottom.svg">
+    <div class="page-container">
+        <h1 class="page-title">Collection Marvel</h1>
+        <div class="characters-grid">
+            {{range .data.results}}
+                <div class="character-card">
+                    <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.name}}">
+                    <h2>{{.name}}</h2>
+                    <p>{{if .description}}{{.description}}{{else}}Aucune description disponible.{{end}}</p>
+                    <div class="card-actions">
+                        <form action="/favoris" method="POST" style="display: inline;">
+                            <input type="hidden" name="characterId" value="{{.id}}">
+                            <button type="submit">❤️ Favoris</button>
+                        </form>
+                        <a href="/character/details/{{.id}}" target="_blank" class="details-btn">📖 Détails</a>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+        <div class="pagination">
+            {{if gt .currentPage 1}}
+                <a href="/collection?page={{sub .currentPage 1}}" class="pagination-btn">Précédent</a>
+            {{else}}
+                <button disabled class="pagination-btn">Précédent</button>
+            {{end}}
+            
+            <span class="page-info">Page {{.currentPage}} sur {{.totalPages}}</span>
+            
+            {{if lt .currentPage .totalPages}}
+                <a href="/collection?page={{add .currentPage 1}}" class="pagination-btn">Suivant</a>
+            {{else}}
+                <button disabled class="pagination-btn">Suivant</button>
+            {{end}}
+        </div>
     </div>
-    <script src="/static/js/script.js"></script>
 </body>
 </html>
 {{end}}

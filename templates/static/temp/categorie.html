@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/collection.css">
-    <title>Page de TEST</title>
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>Catégories - Marvel</title>
 </head>
 <body>
     <nav>
         <div class="logo-nav">
-            <a href="#"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+            <a href="/mainMenu"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
         </div>
         <ul class="nav-links">
             <li><a href="/mainMenu">Accueil</a></li>
@@ -27,7 +30,62 @@
         <img class="bulle2" id="BulleB2" src="static/img/Right.svg">
         <img class="bulle3" id="BulleB3" src="static/img/Bottom.svg">
     </div>
-    <script src="/static/js/script.js"></script>
+    <div class="page-container">
+        <h1 class="page-title">Catégories</h1>
+        <div class="categories-nav">
+            <a href="/categorie?cat=avengers" class="category-button">Avengers</a>
+            <a href="/categorie?cat=xmen" class="category-button">X-Men</a>
+            <a href="/categorie?cat=other" class="category-button">Autres</a>
+        </div>
+        
+        <div class="page-content">
+            <div class="characters-grid">
+                {{if .data}}
+                    {{range .data.results}}
+                        <div class="character-card">
+                            <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.name}}">
+                            <h2>{{.name}}</h2>
+                            <p>{{if .description}}{{.description}}{{else}}Aucune description disponible.{{end}}</p>
+                            <div class="card-actions">
+                                <form action="/favoris" method="POST" style="display: inline;">
+                                    <input type="hidden" name="characterId" value="{{.id}}">
+                                    <button type="submit">❤️ Favoris</button>
+                                </form>
+                                <a href="/character/details/{{.id}}" target="_blank" class="details-btn">📖 Détails</a>
+                            </div>
+                        </div>
+                    {{end}}
+                {{end}}
+            </div>
+
+            {{if .data}}
+                <div class="pagination">
+                    {{if gt .currentPage 1}}
+                        <a href="/categorie?cat={{.category}}&page={{sub .currentPage 1}}" class="pagination-btn">Précédent</a>
+                    {{else}}
+                        <button disabled class="pagination-btn">Précédent</button>
+                    {{end}}
+                    
+                    <span class="page-info">Page {{.currentPage}} sur {{.totalPages}}</span>
+                    
+                    {{if lt .currentPage .totalPages}}
+                        <a href="/categorie?cat={{.category}}&page={{add .currentPage 1}}" class="pagination-btn">Suivant</a>
+                    {{else}}
+                        <button disabled class="pagination-btn">Suivant</button>
+                    {{end}}
+                </div>
+            {{end}}
+        </div>
+    </div>
+
+    <!-- Ajouter le modal pour les détails -->
+    <div id="character-modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+    <script src="/static/js/details.js"></script>
 </body>
 </html>
 {{end}}

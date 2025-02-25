@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/collection.css">
-    <title>Page de TEST</title>
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>Favoris - Marvel</title>
 </head>
 <body>
     <nav>
         <div class="logo-nav">
-            <a href="#"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+            <a href="/mainMenu"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
         </div>
         <ul class="nav-links">
             <li><a href="/mainMenu">Accueil</a></li>
@@ -27,7 +30,59 @@
         <img class="bulle2" id="BulleB2" src="static/img/Right.svg">
         <img class="bulle3" id="BulleB3" src="static/img/Bottom.svg">
     </div>
+    <div class="page-container">
+        <h1 class="page-title">Mes Favoris</h1>
+        <div class="characters-grid">
+            {{range .favorites}}
+                <div class="character-card">
+                    <img src="{{.Thumbnail.Path}}.{{.Thumbnail.Extension}}" alt="{{.Name}}">
+                    <h2>{{.Name}}</h2>
+                    <p>{{if .Description}}{{.Description}}{{else}}Aucune description disponible.{{end}}</p>
+                    <div class="card-actions">
+                        <button onclick="toggleFavorite('{{.ID}}')" class="favorite-btn active">
+                            ❤️
+                        </button>
+                        <a href="/character/details/{{.ID}}" class="details-btn">📖 Détails</a>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+    </div>
     <script src="/static/js/script.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Charger les favoris au chargement de la page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/favorites');
+                const favorites = await response.json();
+                const container = document.getElementById('favorites-container');
+                
+                if (favorites.length === 0) {
+                    container.innerHTML = '<p class="no-favorites">Aucun favori pour le moment</p>';
+                    return;
+                }
+
+                favorites.forEach(favorite => {
+                    const card = document.createElement('div');
+                    card.className = 'character-card';
+                    card.innerHTML = `
+                        <img src="${favorite.imagePath}.${favorite.imageExt}" alt="${favorite.name}">
+                        <h2>${favorite.name}</h2>
+                        <p>${favorite.description || 'Aucune description disponible.'}</p>
+                        <div class="card-actions">
+                            <button class="remove-btn" onclick="removeFromFavorites(${favorite.id}, this)">
+                                🗑️ Retirer des favoris
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading favorites:', error);
+            }
+        });
+    </script>
 </body>
 </html>
 {{end}}

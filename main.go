@@ -2,12 +2,26 @@ package main
 
 import (
 	"api/routes"
+	"api/services"
 	"api/templates"
+	"fmt"
+	"log"
+	"net/http"
 )
 
 func main() {
+	// Initialiser les templates
 	templates.InitTemplates()
-	routes.InitServe()
+
+	// Créer le service de cache
+	cacheService := services.NewCacheService()
+
+	// Configurer les routes
+	routes.InitRoutes(cacheService)
+
+	// Démarrer le serveur
+	fmt.Println("Serveur démarré sur http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	// value hash
 	/*ts := 19

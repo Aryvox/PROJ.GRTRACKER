@@ -1,0 +1,73 @@
+{{define "media_details"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/collection.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>{{.media.title}} - Détails</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-nav">
+            <a href="#"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/mainMenu">Accueil</a></li>
+            <li><a href="/collection">Collection</a></li>
+            <li><a href="/ressource">Ressource</a></li>
+            <li><a href="/categorie">Categorie</a></li>
+            <li><a href="/favoris">Favoris</a></li>
+            <li><a href="/recherche">Recherche</a></li>
+            <li><a href="/media">Films & Séries</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="page-container">
+        <div class="page-content media-details">
+            <h1 class="page-title">{{.media.title}}</h1>
+            <img src="{{.media.thumbnail.path}}.{{.media.thumbnail.extension}}" alt="{{.media.title}}">
+            <p class="description">{{if .media.description}}{{.media.description}}{{else}}Aucune description disponible.{{end}}</p>
+            
+            <div class="media-stats">
+                <p>Format: {{.media.format}}</p>
+                <p>Pages: {{.media.pageCount}}</p>
+                {{with index .media.prices 0}}
+                    <p>Prix: ${{.price}}</p>
+                {{else}}
+                    <p>Prix: Non disponible</p>
+                {{end}}
+            </div>
+
+            <div class="media-creators">
+                <h3>Créateurs</h3>
+                {{if .media.creators.items}}
+                    {{range .media.creators.items}}
+                        <p>{{.role}}: {{.name}}</p>
+                    {{end}}
+                {{else}}
+                    <p>Aucun créateur listé</p>
+                {{end}}
+            </div>
+
+            <div class="media-characters">
+                <h3>Personnages</h3>
+                {{if .media.characters.items}}
+                    {{range .media.characters.items}}
+                        <p>{{.name}}</p>
+                    {{end}}
+                {{else}}
+                    <p>Aucun personnage listé</p>
+                {{end}}
+            </div>
+
+            <a href="/media" class="back-btn">Retour à la liste</a>
+        </div>
+    </div>
+</body>
+</html>
+{{end}} 

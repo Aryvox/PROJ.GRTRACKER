@@ -1,0 +1,72 @@
+{{define "ressource"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/collection.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/marvel-collection.css">
+    <title>Ressources - Marvel</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-nav">
+            <a href="/mainMenu"><img src="/static/img/Marvel_Logo.png" alt="Logo Marvel"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/mainMenu">Accueil</a></li>
+            <li><a href="/collection">Collection</a></li>
+            <li><a href="/ressource">Ressource</a></li>
+            <li><a href="/categorie">Categorie</a></li>
+            <li><a href="/favoris">Favoris</a></li>
+            <li><a href="/recherche">Recherche</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <div class="cont-img">
+        <img class="bulle1" id="BulleB1" src="static/img/TopM.svg">
+        <img class="bulle2" id="BulleB2" src="static/img/Right.svg">
+        <img class="bulle3" id="BulleB3" src="static/img/Bottom.svg">
+    </div>
+    <div class="page-container">
+        <h1 class="page-title">Ressources Marvel</h1>
+        <div class="page-content">
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h2>Comics</h2>
+                    <p>Découvrez l'univers des comics Marvel, des classiques aux dernières sorties.</p>
+                    <ul>
+                        <li><a href="/api/comics/popular" class="resource-link">Séries populaires</a></li>
+                        <li><a href="/api/comics/avengers" class="resource-link">Événements Avengers</a></li>
+                        <li><a href="/api/comics/xmen" class="resource-link">Saga X-Men</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h2>Personnages</h2>
+                    <p>Explorez les héros et vilains qui peuplent l'univers Marvel.</p>
+                    <ul>
+                        <li><a href="/api/team/avengers" class="resource-link">Avengers</a></li>
+                        <li><a href="/api/team/xmen" class="resource-link">X-Men</a></li>
+                        <li><a href="/collection" class="resource-link">Tous les héros</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h2>Univers</h2>
+                    <p>Plongez dans les différentes dimensions et réalités de Marvel.</p>
+                    <ul>
+                        <li><a href="/api/universe/616" class="resource-link">Terre-616</a></li>
+                        <li><a href="/api/universe/ultimate" class="resource-link">Ultimate Universe</a></li>
+                        <li><a href="/collection" class="resource-link">Explorer tout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
+{{end}} 
