@@ -34,23 +34,50 @@
         <h1 class="page-title">Recherche</h1>
         <div class="page-content">
             <form action="/search" method="GET" class="search-bar">
-                <input type="text" name="q" class="search-input" placeholder="Rechercher un personnage..." value="{{.query}}">
-                <button type="submit" class="search-button">Rechercher</button>
+                <div class="search-main">
+                    <input type="text" name="q" class="search-input" placeholder="Rechercher un personnage..." value="{{.query}}">
+                    <button type="submit" class="search-button">Rechercher</button>
+                </div>
+                
+                <div class="filters">
+                    <select name="sort" id="sort" class="filter-select">
+                        <option value="">Trier par...</option>
+                        <option value="name_asc">Nom (A-Z)</option>
+                        <option value="name_desc">Nom (Z-A)</option>
+                    </select>
+                    
+                    <select name="comics" id="comics" class="filter-select">
+                        <option value="">Nombre de comics...</option>
+                        <option value="0-10">0-10 comics</option>
+                        <option value="11-50">11-50 comics</option>
+                        <option value="51+">51+ comics</option>
+                    </select>
+                    
+                    <select name="series" id="series" class="filter-select">
+                        <option value="">Nombre de séries...</option>
+                        <option value="0-5">0-5 séries</option>
+                        <option value="6-20">6-20 séries</option>
+                        <option value="21+">21+ séries</option>
+                    </select>
+                </div>
             </form>
             
             <div class="characters-grid">
                 {{if .data}}
                     {{range .data.results}}
-                        <div class="character-card">
+                        <div class="character-card" 
+                             data-comics="{{.comics.available}}"
+                             data-series="{{.series.available}}">
                             <img src="{{.thumbnail.path}}.{{.thumbnail.extension}}" alt="{{.name}}">
                             <h2>{{.name}}</h2>
                             <p>{{if .description}}{{.description}}{{else}}Aucune description disponible.{{end}}</p>
+                            <div class="stats">
+                                <span>Comics: {{.comics.available}}</span>
+                                <span>Séries: {{.series.available}}</span>
+                            </div>
                             <div class="card-actions">
-                                <form action="/favoris" method="POST" style="display: inline;">
-                                    <input type="hidden" name="characterId" value="{{.id}}">
-                                    <button type="submit">❤️ Favoris</button>
-                                </form>
-                                <a href="/character/details/{{.id}}" target="_blank" class="details-btn">📖 Détails</a>
+                                <button onclick="toggleFavorite(this, '{{.id}}')" class="favorite-btn">🤍</button>
+                                <a href="/character/details/{{.id}}" class="details-btn">📖 Détails</a>
                             </div>
                         </div>
                     {{end}}
@@ -66,6 +93,8 @@
             <div id="modal-content"></div>
         </div>
     </div>
+    <script src="/static/js/favorites.js"></script>
+    <script src="/static/js/search.js"></script>
     <script src="/static/js/details.js"></script>
 </body>
 </html>

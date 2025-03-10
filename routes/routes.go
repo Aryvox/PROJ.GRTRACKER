@@ -140,78 +140,42 @@ func InitRoutes(cacheService *services.CacheService) {
 	http.HandleFunc("/favoris", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET":
-			favorites, err := marvelService.FavoriteService.GetAll()
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			temp.Render(w, "favoris", map[string]interface{}{
-				"favorites": favorites,
-			})
+			// Recuperation de la liste des favoris
 
+			// Recuperation des données des perso
+
+			// Affichage des données des perso
+			temp.Render(w, "favoris", nil)
 		case "POST":
-			characterID := r.FormValue("characterId")
-			id, err := strconv.Atoi(characterID)
-			if err != nil {
-				http.Error(w, "ID invalide", http.StatusBadRequest)
-				return
-			}
+			// Récuperation de l'id
 
-			// Récupérer les détails du personnage
-			data, err := marvelService.FetchCharacterDetails(id)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
+			// Ajouter cette id au ficher JSON
 
-			var response map[string]interface{}
-			if err := json.Unmarshal([]byte(data), &response); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
+			// Recuperation de la liste des favoris
 
-			results := response["data"].(map[string]interface{})["results"].([]interface{})
-			if len(results) > 0 {
-				character := results[0].(map[string]interface{})
-				favorite := services.Favorite{
-					ID:          id,
-					Name:        character["name"].(string),
-					Description: character["description"].(string),
-					Thumbnail: struct {
-						Path      string `json:"path"`
-						Extension string `json:"extension"`
-					}{
-						Path:      character["thumbnail"].(map[string]interface{})["path"].(string),
-						Extension: character["thumbnail"].(map[string]interface{})["extension"].(string),
-					},
-				}
+			// Recuperation des données des perso
 
-				if marvelService.FavoriteService.IsFavorite(id) {
-					marvelService.FavoriteService.Remove(id)
-				} else {
-					marvelService.FavoriteService.Add(favorite)
-				}
-			}
-
+			// Affichage des données des perso
 			w.WriteHeader(http.StatusOK)
 		}
 	})
 
-	// Ajouter une nouvelle route pour les détails
+	// Route API pour récupérer les détails d'un personnage
 	http.HandleFunc("/api/character/", func(w http.ResponseWriter, r *http.Request) {
 		parts := strings.Split(r.URL.Path, "/")
-		if len(parts) < 3 {
+		if len(parts) < 4 {
 			http.Error(w, "Invalid character ID", http.StatusBadRequest)
 			return
 		}
 
-		id, err := strconv.Atoi(parts[len(parts)-1])
+		id := parts[3]
+		characterID, err := strconv.Atoi(id)
 		if err != nil {
 			http.Error(w, "Invalid character ID", http.StatusBadRequest)
 			return
 		}
 
-		data, err := marvelService.FetchCharacterDetails(id)
+		data, err := marvelService.FetchCharacterDetails(characterID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

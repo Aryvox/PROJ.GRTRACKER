@@ -41,12 +41,10 @@
                         <h2>{{.name}}</h2>
                         <p>{{if .description}}{{.description}}{{else}}Aucune description disponible.{{end}}</p>
                         <div class="card-actions">
-                            <button onclick="toggleFavorite('{{.ID}}')" 
-                                    data-character-id="{{.ID}}" 
-                                    class="favorite-btn {{if .IsFavorite}}active{{end}}">
-                                {{if .IsFavorite}}❤️{{else}}🤍{{end}}
+                            <button onclick="toggleFavorite(this, '{{.id}}')" class="favorite-btn">
+                                🤍
                             </button>
-                            <a href="/character/details/{{.ID}}" class="details-btn">📖 Détails</a>
+                            <a href="/character/details/{{.id}}" class="details-btn">📖 Détails</a>
                         </div>
                     </div>
                 {{end}}

@@ -19,55 +19,13 @@ func NewCharacterController() *CharacterController {
 
 func (c *CharacterController) HandleFavorite(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case "GET":
+		temp.Render(w, "favoris", nil)
 	case "POST":
-		characterID := r.FormValue("characterId")
-		id, _ := strconv.Atoi(characterID)
-
-		data, err := c.service.FetchCharacterDetails(id)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		characters, err := c.service.ProcessCharacters([]byte(data))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		if len(characters) == 0 {
-			http.Error(w, "Character not found", http.StatusNotFound)
-			return
-		}
-
-		character := characters[0]
-		favorite := services.Favorite{
-			ID:          character.ID,
-			Name:        character.Name,
-			Description: character.Description,
-			Thumbnail: struct {
-				Path      string `json:"path"`
-				Extension string `json:"extension"`
-			}{
-				Path:      character.Thumbnail.Path,
-				Extension: character.Thumbnail.Extension,
-			},
-		}
-
-		if err := c.service.SaveFavorite(favorite); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
-
-	case "DELETE":
-		id, _ := strconv.Atoi(r.URL.Query().Get("id"))
-		if err := c.service.RemoveFavorite(id); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		http.Redirect(w, r, "/favoris", http.StatusSeeOther)
+		// Pour l'API des favoris, juste renvoyer un succès
+		w.WriteHeader(http.StatusOK)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }
 

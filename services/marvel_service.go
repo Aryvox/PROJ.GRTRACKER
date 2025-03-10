@@ -24,14 +24,10 @@ const (
 	POPULAR_SERIES  = "454,354,31445,16452" // IDs des séries populaires
 )
 
-type MarvelService struct {
-	FavoriteService *FavoriteService
-}
+type MarvelService struct{}
 
 func NewMarvelService() *MarvelService {
-	return &MarvelService{
-		FavoriteService: NewFavoriteService(),
-	}
+	return &MarvelService{}
 }
 
 // generateAuthParams génère les paramètres d'authentification nécessaires pour l'API Marvel
@@ -170,20 +166,6 @@ func fetchFromAPI(url string) (string, error) {
 	return "", lastErr
 }
 
-// Gestion des favoris
-func (s *MarvelService) SaveFavorite(favorite Favorite) error {
-	return s.FavoriteService.Add(favorite)
-}
-
-func (s *MarvelService) RemoveFavorite(id int) error {
-	return s.FavoriteService.Remove(id)
-}
-
-func (s *MarvelService) GetCharacterWithFavorites(character models.Character) models.Character {
-	character.IsFavorite = s.FavoriteService.IsFavorite(character.ID)
-	return character
-}
-
 func (s *MarvelService) ProcessCharacters(data []byte) ([]models.Character, error) {
 	var response struct {
 		Data struct {
@@ -193,11 +175,6 @@ func (s *MarvelService) ProcessCharacters(data []byte) ([]models.Character, erro
 
 	if err := json.Unmarshal(data, &response); err != nil {
 		return nil, err
-	}
-
-	// Marquer les favoris
-	for i := range response.Data.Results {
-		response.Data.Results[i].IsFavorite = s.FavoriteService.IsFavorite(response.Data.Results[i].ID)
 	}
 
 	return response.Data.Results, nil
